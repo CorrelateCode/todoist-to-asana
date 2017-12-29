@@ -22,6 +22,7 @@ import todoist
 
 ENV_PREFIX = "CORRELATE_"
 
+
 def conf(var):
     return os.environ.get(ENV_PREFIX + var)
 
@@ -29,7 +30,7 @@ def conf(var):
 TECH_TEAM = conf("ASANA_TECH_TEAM")
 IMP_TEAM = conf("ASANA_IMP_TEAM")
 WORKSPACE = conf("ASANA_WORKSPACE")
-ASANA_PAT = conf("ASANA_RAY_PERSONAL_ACCESS_TOKEN")
+ASANA_PAT = conf("ASANA_PERSONAL_ACCESS_TOKEN")
 TODOIST_USER = conf("TODOIST_USER")
 TODOIST_PASS = conf("TODOIST_PASS")
 
@@ -225,7 +226,7 @@ def recreate_todoist_projects_in_asana(client):
 
 if __name__ == "__main__":
     print("Logging into asana")
-    client = get_asana_client(CORRELATE_ASANA_RAY_PERSONAL_ACCESS_TOKEN)
+    client = get_asana_client(ASANA_PAT)
 
     print("Retrieving todoist data")
     if USE_CACHED_TODOIST_DATA:
