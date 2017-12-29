@@ -10,15 +10,6 @@ import asana
 import requests
 import todoist
 
-# below would be useful but barfs on unicode, despite never manipulating the args. arg!
-# class Logger(object):
-#     def __init__(self):
-#         self.terminal = sys.stdout
-#         self.log = open("etl.log", "a")
-#     def write(self, message):
-#         self.terminal.write(message)
-#         self.log.write(message)
-# sys.stdout = Logger()
 
 ENV_PREFIX = "CORRELATE_"
 
@@ -27,7 +18,6 @@ def conf(var):
     return os.environ.get(ENV_PREFIX + var)
 
 # below are set by sourcing variables.sh
-TECH_TEAM = conf("ASANA_TECH_TEAM")
 IMP_TEAM = conf("ASANA_IMP_TEAM")
 WORKSPACE = conf("ASANA_WORKSPACE")
 ASANA_PAT = conf("ASANA_PERSONAL_ACCESS_TOKEN")
@@ -100,21 +90,10 @@ def get_asana_client(token):
     print_("me=" + json.dumps(me, indent=2))
     return client
 
-    # find your "Personal Projects" workspace
-    # try:
-    #     personal_projects = next(workspace for workspace in me['workspaces']
-    #                              if workspace['name'] == 'Personal Projects')
-    #     projects = client.projects.find_by_workspace(personal_projects['id'], iterator_type=None)
-    #     print_("personal projects=" + json.dumps(projects, indent=2))
-    # except Exception, e:
-    #     print_("No personal projects found")
-
 
 def attach_file_to_asana_task(asana_task, todoist_note):
     print("Attach file to asana task\n")
-    # fname = '/Users/ray/work/public_html/cambria-and-hike/p1010065.jpg'
-    # with open(fname, 'r') as f:
-    #     data = f.read()
+
     fa = todoist_note['file_attachment']
     file_name = fa.get('file_name', '')
     file_type = fa.get('file_type', None)
@@ -184,7 +163,6 @@ def create_asana_task(asana_proj, todoist_task):
         WORKSPACE,
         {
             'name': name,
-            # 'notes': 'Note: This is a test task created with the python-asana client.',
             'projects': [asana_proj['id']],
             'due_on': due_on,
             'completed': t['checked'] and True or False
@@ -219,9 +197,7 @@ def recreate_todoist_projects_in_asana(client):
     print("Recreate todoist projects in asana\n")
     todoist_projects = get_category('projects')
     for proj in todoist_projects:
-        x = 'y' # raw_input("Recreate project %s in asana? [y/n] " % (proj['name']))
-        if x=='y':
-            recreate_todoist_project_in_asana(client, proj)
+        recreate_todoist_project_in_asana(client, proj)
 
 
 if __name__ == "__main__":
