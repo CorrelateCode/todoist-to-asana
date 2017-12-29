@@ -1,0 +1,4 @@
+- create (or switch to) a virtualenv for the project
+- pip install -r requirements.txt
+- set up the necessary environment variables for the script (see python file for details)
+- run
